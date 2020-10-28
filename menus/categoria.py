@@ -1,8 +1,8 @@
 import tkinter as tk
+import mysql.connector
 from tkinter import ttk, messagebox
-from dominio.entidades import Categoria
 
-class MainWindowC(Categoria):
+class MainWindowC:
     def __init__(self, root):
         root.title('Categoria')
         root.geometry("800x700")

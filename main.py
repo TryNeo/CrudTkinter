@@ -5,12 +5,11 @@ import tkinter as tk
 import mysql.connector
 import bcrypt
 from PIL import Image, ImageTk
-from dominio.entidades import *
 from menus.principal import *
 from tkinter import ttk, messagebox, PhotoImage
 
 
-class MainWindow(Usuario):
+class MainWindow:
     def __init__(self, root):
         root.title('Login')
         root.geometry("400x500")
