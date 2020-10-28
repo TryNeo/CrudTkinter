@@ -78,11 +78,24 @@ class MainWindow:
                     
     def registry(self):
         self.registry_win = tk.Toplevel()
-        self.registry_win.title('Registry')
-        self.registry_win.geometry("300x350")
+        self.registry_win.title('Registro')
+        self.registry_win.geometry("400x250")
         self.registry_win.resizable(0, 0)
 
-        title_label = tk.Label(self.registry_win, text="Registry", font=("Arial", 20), fg="black").place(x=90,
+        #########centered screen##############
+        self.registry_win.update_idletasks()
+        width = self.registry_win.winfo_width()
+        frm_width = self.registry_win.winfo_rootx() - self.registry_win.winfo_x()
+        win_width = width + 2 * frm_width
+        height = self.registry_win.winfo_height()
+        titlebar_height = self.registry_win.winfo_rooty() - self.registry_win.winfo_y()
+        win_height = height + titlebar_height + frm_width
+        x = self.registry_win.winfo_screenwidth() // 2 - win_width // 2
+        y = self.registry_win.winfo_screenheight() // 2 - win_height // 2
+        self.registry_win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+        self.registry_win.deiconify()
+
+        title_label = tk.Label(self.registry_win, text="Registro de usuarios", font=("Arial", 20), fg="black").place(x=90,
                                                                                                          y=0)
         self.email = tk.StringVar()
         email_label = tk.Label(self.registry_win, text="Email:", font=("Arial", 12)).place(x=20, y=50)
@@ -96,9 +109,9 @@ class MainWindow:
         label_pass = tk.Label(self.registry_win, text="Password:", font=("Arial", 12)).place(x=20, y=130)
         entry_user = tk.Entry(self.registry_win, width=30, textvariable=self.password, show="*").place(x=100, y=131)
 
-        button_new = tk.Button(self.registry_win, text="New", font=("Arial", 12), command=self.new).place(x=20, y=200)
+        button_new = tk.Button(self.registry_win, text="Limpiar", font=("Arial", 12), command=self.new).place(x=20, y=200)
 
-        button_registry_sql = tk.Button(self.registry_win, text="Register", font=("Arial", 12),
+        button_registry_sql = tk.Button(self.registry_win, text="Registrar", font=("Arial", 12),
                                         command=self.register_sql).place(x=210,
                                                                          y=200)
 
