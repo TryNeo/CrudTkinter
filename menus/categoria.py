@@ -5,7 +5,7 @@ from tkinter import ttk, messagebox
 class MainWindowC:
     def __init__(self, root):
         root.title('Categoria')
-        root.geometry("800x700")
+        root.geometry("700x800")
         root.resizable(0, 0)
 
         #########centered screen##############
@@ -21,10 +21,14 @@ class MainWindowC:
         root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
         root.deiconify()
 
-        self.list_category(root)
-        
+        self.search = tk.StringVar()
+        label_search = tk.Label(root, text="Buscador:", font=("Arial", 12)).place(x=15, y=50)
+        entry_search = tk.Entry(root, width=30, textvariable=self.search).place(x=100, y=50)
+        button_search = tk.Button(root, text="Buscar", font=("Arial", 12),command=self.list_search).place(x=350, y=45)
 
-    #########Connection Mysql###########
+        self.registry_category(root)
+        self.list_category(root)
+
     def connecting(self):
         try:
             self.mydb = mysql.connector.connect(host='localhost',
@@ -36,14 +40,41 @@ class MainWindowC:
             print("Review the Error -->", error)
         finally:
             print("connection successfully")
+    
+    def list_search(self):
+        search = self.search.get()
+        print(search)
+
+    def list_update(self,my_tree_cate=None):
+        self.connecting()
+        search = self.search.get()
+        if search:
+            query =  "SELECT id_categoria,nombre,descripcion FROM categoria WHERE nombre = %s"
+            get_data = (search,)
+            self.mysqlcursor.execute(query,get_data)
+            rows = self.mysqlcursor.fetchall()
+        else:
+            query = "SELECT id_categoria,nombre,descripcion FROM categoria"
+            self.mysqlcursor.execute(query)
+            rows = self.mysqlcursor.fetchall()
+        my_tree_cate.delete(*my_tree_cate.get_children())
+        for i in rows:
+            my_tree_cate.insert('','end',values=i)
+
+
+    def registry_category(self,root):
+        wrapper_category_reg = tk.LabelFrame(root,text="Categoria")
+        wrapper_category_reg.pack(fill="both",expand="yes",padx=20,pady=100)
+        title_label = tk.Label(wrapper_category_reg, text="Registro de usuarios", font=("Arial", 10), fg="black").place(x=90,
+                                                                                                         y=0)
+
 
     def list_category(self,root):
-        self.connecting()
-        my_tree_cate  = ttk.Treeview(root, columns = ("ID","NOMBRE","DESCRIPCION"),selectmode="extended", height=200    )
-        my_tree_cate.heading('ID', text="ID",anchor=tk.W)
-        my_tree_cate.heading('NOMBRE', text="NOMBRE",anchor=tk.W)
-        my_tree_cate.heading('DESCRIPCION', text="DESCRIPCION",anchor=tk.W)
-        my_tree_cate.column('#0',stretch=tk.NO,minwidth=0, width=0)
-        my_tree_cate.column('#1',stretch=tk.NO,minwidth=0, width=0)
-        my_tree_cate.column('#2',stretch=tk.NO,minwidth=0, width=80)
+        wrapper_category = tk.LabelFrame(root,text="Listado de Categoria")
+        wrapper_category.pack(fill="both",expand="yes",padx=20,pady=100)
+        my_tree_cate  = ttk.Treeview(wrapper_category,columns=(1,2,3),show="headings",height="6")
         my_tree_cate.pack()
+        my_tree_cate.heading(1,text="ID")
+        my_tree_cate.heading(2,text="NOMBRE")
+        my_tree_cate.heading(3,text="DESCRIPCION")
+        self.list_update(my_tree_cate)
