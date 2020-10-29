@@ -21,12 +21,14 @@ class MainWindowP:
         root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
         root.deiconify()
 
+        
         button_categoria = tk.Button(root, text="Categoria",\
             height=2, width=10,font=("Arial", 12), \
             command=self.open_categoria).place(x=50,y=50)
 
+
                                                                                     
-    def open_categoria(self):
+    def open_categoria(self,root=None):
         main_c = tk.Tk()
         window_c = MainWindowC(main_c)
         main_c.mainloop()
