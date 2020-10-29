@@ -75,7 +75,7 @@ class MainWindowC:
         button_list_clear = tk.Button(root, text="restaurar listado", font=("Arial", 12),command=self.list_clear).place(x=370, y=15)
         button_register = tk.Button(root, text="registro", font=("Arial", 12),command=self.list_clear).place(x=20, y=55)
         button_edit = tk.Button(root, text="editar", font=("Arial", 12),command=self.list_clear).place(x=120, y=55)
-        button_eliminar = tk.Button(root, text="editar", font=("Arial", 12),command=self.list_clear).place(x=210, y=55)
+        button_eliminar = tk.Button(root, text="eliminar", font=("Arial", 12),command=self.list_clear).place(x=210, y=55)
 
         query = "SELECT id_categoria,nombre,descripcion FROM categoria"
         self.mysqlcursor.execute(query)
