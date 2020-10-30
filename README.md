@@ -7,4 +7,6 @@ pip install -r requirements.txt
 
 
 # Image
-![Alt text](https://i.imgur.com/kf9GrDP.png)
+![Alt text](https://i.imgur.com/QjDLVYT.png)
+![Alt text](https://i.imgur.com/jXk8wDO.png)
+![Alt text](https://i.imgur.com/iHClOiN.png)
