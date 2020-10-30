@@ -1,8 +1,8 @@
 import tkinter as tk
 import mysql.connector
-from tkinter import *
 import tkinter.messagebox as MessageBox
-from menus.principal import *
+
+from tkinter import *
 
 class MainWindowC:
     def __init__(self, root):
@@ -59,9 +59,12 @@ class MainWindowC:
         search_list = self.search.get()
         query = "SELECT id_categoria,nombre,descripcion FROM categoria where nombre =%s" #BUG 
         get_data = (search_list,)
-        self.mysqlcursor.execute(query,get_data)
-        rows = self.mysqlcursor.fetchall()
-        self.list_update(rows)
+        if search_list == "":
+            self.list_clear()
+        else:
+            self.mysqlcursor.execute(query,get_data)
+            rows = self.mysqlcursor.fetchall()
+            self.list_update(rows)
     
     def list_update(self,rows):
         self.my_tree_cate.delete(*self.my_tree_cate.get_children())
@@ -85,6 +88,8 @@ class MainWindowC:
         button_register = tk.Button(root, text="registro", font=("Arial", 12),command=self.register_category).place(x=20, y=55)
         button_edit = tk.Button(root, text="editar", font=("Arial", 12),command=self.edit_category).place(x=120, y=55)
         button_eliminar = tk.Button(root, text="eliminar", font=("Arial", 12),command=self.delete_category).place(x=210, y=55)
+
+        button_menu = tk.Button(root, text="Menu", font=("Arial", 12),command=None).place(x=610, y=55)
 
         self.list_clear()
 
@@ -209,6 +214,7 @@ class MainWindowC:
             self.mysqlcursor.execute(query, get_data)
             self.mydb.commit()
             messagebox.showinfo(title="Edit Completed", message='Nombre y descripcion editado Correctamente')
+            self.destroy_ven()
             self.list_clear()
     
     def delete_category(self):
@@ -241,7 +247,7 @@ class MainWindowC:
 
             title_label = tk.Label(self.del_win, text="Eliminar Categoria", font=("Arial", 20), fg="black").place(x=100,y=0)
             
-            button_new = tk.Button(self.del_win, text="Si", font=("Arial", 12)).place(x=120, y=70)
+            button_new = tk.Button(self.del_win, text="Si", font=("Arial", 12),command=self.delete_sql_category).place(x=120, y=70)
 
             button_del_sql_category = tk.Button(self.del_win, text="No", font=("Arial", 12),
                                         command=self.destroy_ven).place(x=260,
@@ -255,11 +261,12 @@ class MainWindowC:
     def delete_sql_category(self):
         self.connecting()
         id_categoria_del_c = int(self.id_categoria_del_c.get())
-        query = "DELETE FROM categoria WHERE id_categoria = %s"
+        query = "DELETE FROM categoria WHERE id_categoria = "+str(id_categoria_del_c)
         if id_categoria_del_c:
-            self.mysqlcursor.execute(query,(id_categoria_del_c))
+            self.mysqlcursor.execute(query)
             self.mydb.commit()
             messagebox.showinfo(title="Delete Completed", message='Registro Eliminado correctamente')
+            self.destroy_ven()
             self.list_clear()
         else:
             messagebox.showerror(title="Incomplete data", message="No existe ese dato")
